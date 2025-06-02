@@ -1,0 +1,8 @@
+<h2>Nova tarefa para lista: {{ lista.titulo }}</h2>
+
+<form method="POST" action="{{ url_for('rotas.nova_tarefa', lista_id=lista.id) }}">
+  <input type="text" name="descricao" placeholder="Descrição da tarefa" required>
+  <button type="submit">Criar tarefa</button>
+</form>
+
+<p><a href="{{ url_for('rotas.ver_tarefas', lista_id=lista.id) }}">Voltar para tarefas</a></p>

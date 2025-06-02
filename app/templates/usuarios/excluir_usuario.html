@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Excluir Usuário</title>
+</head>
+<body>
+    <h1>Excluir usuário: {{ usuario.nome }}</h1>
+
+    <p>Digite sua senha para confirmar a exclusão do usuário.</p>
+
+    <form method="post">
+        <label for="senha">Senha:</label>
+        <input type="password" name="senha" id="senha" required />
+        <button type="submit">Confirmar exclusão</button>
+    </form>
+
+    <a href="{{ url_for('rotas.listar_usuarios') }}">Cancelar</a>
+</body>
+</html>

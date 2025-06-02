@@ -1,0 +1,12 @@
+<h2>Editar tarefa</h2>
+
+<form method="POST" action="{{ url_for('rotas.editar_tarefa', id=tarefa.id) }}">
+  <input type="text" name="descricao" value="{{ tarefa.descricao }}" required>
+  <label>
+    <input type="checkbox" name="feita" {% if tarefa.feita %}checked{% endif %}>
+    Feita
+  </label>
+  <button type="submit">Salvar alterações</button>
+</form>
+
+<p><a href="{{ url_for('rotas.ver_tarefas', lista_id=tarefa.lista_id) }}">Voltar para tarefas</a></p>

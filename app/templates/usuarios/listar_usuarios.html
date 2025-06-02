@@ -1,0 +1,22 @@
+<!-- app/templates/usuarios/listar_usuarios.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuários</title>
+</head>
+<body>
+    <h1>Usuários Cadastrados</h1>
+    <ul>
+        {% for usuario in usuarios %}
+            <li>
+                {{ usuario.nome }}
+                <a href="{{ url_for('rotas.excluir_usuario', id=usuario.id) }}" style="color: red; margin-left: 10px;">
+                    Excluir
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('rotas.painel') }}">Voltar ao Painel</a>
+</body>
+</html>
