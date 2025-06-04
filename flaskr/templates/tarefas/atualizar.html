@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Atualizar Tarefa{% endblock %}
+
+{% block header %}
+  <h2>Atualizar Tarefa</h2>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="titulo">Título</label>
+    <input name="titulo" id="titulo" value="{{ tarefa['titulo'] }}" required>
+
+    <label for="descricao">Descrição</label>
+    <textarea name="descricao" id="descricao">{{ tarefa['descricao'] }}</textarea>
+
+    <button type="submit">Salvar</button>
+  </form>
+  <p><a href="{{ url_for('todo.index') }}">Voltar</a></p>
+{% endblock %}

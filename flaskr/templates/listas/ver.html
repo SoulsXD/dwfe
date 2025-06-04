@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ lista.titulo }}</h1>
+  <p>Autor: {{ lista.username }}</p>
+
+  <p><a href="{{ url_for('todo.criar_tarefa', lista_id=lista.id) }}">Criar nova tarefa</a></p>
+
+  {% if tarefas %}
+    <ul>
+      {% for tarefa in tarefas %}
+        <li>{{ tarefa.titulo }} - {{ tarefa.descricao }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Essa lista ainda não tem tarefas.</p>
+  {% endif %}
+  
+  <p><a href="{{ url_for('todo.index') }}">Voltar para Minhas Listas</a></p>
+{% endblock %}
