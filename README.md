@@ -1,7 +1,0 @@
-git clone https://github.com/SoulsXD/dwfe.git
-cd dwfe
-
-python -m venv venv
-venv\Scripts\activate.bat
-pip install -r requirements.txt
-python iniciar.py
