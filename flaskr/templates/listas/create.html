@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if lista %}Editar Lista{% else %}Nova Lista{% endif %}
+{% endblock %}
+
+{% block content %}
+  <h1>{% if lista %}Editar{% else %}Criar{% endif %} Lista</h1>
+
+  <form method="post">
+    <label for="titulo">Título:</label>
+    <input name="titulo" id="titulo" value="{{ lista['titulo'] if lista else '' }}" required>
+    <button type="submit">Salvar</button>
+  </form>
+{% endblock %}

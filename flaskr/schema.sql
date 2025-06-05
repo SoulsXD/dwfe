@@ -1,0 +1,25 @@
+DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS lista;
+DROP TABLE IF EXISTS tarefa;
+
+CREATE TABLE usuario (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    senha TEXT NOT NULL
+);
+
+CREATE TABLE lista (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titulo TEXT NOT NULL,
+    usuario_id INTEGER NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuario (id)
+);
+
+CREATE TABLE tarefa (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    descricao TEXT NOT NULL,
+    completa BOOLEAN NOT NULL DEFAULT 0,
+    lista_id INTEGER NOT NULL,
+    FOREIGN KEY (lista_id) REFERENCES lista (id)
+);

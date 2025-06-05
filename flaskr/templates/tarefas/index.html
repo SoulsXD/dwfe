@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Tarefas da Lista{% endblock %}
+
+{% block content %}
+  <h1>Tarefas: {{ lista['titulo'] }}</h1>
+
+  <a href="{{ url_for('tarefas.criar', lista_id=lista['id']) }}">+ Nova Tarefa</a>
+  <a href="{{ url_for('listas.index') }}">← Voltar para Listas</a>
+
+  <ul>
+    {% for tarefa in tarefas %}
+      <li>
+        <form action="{{ url_for('tarefas.completar', lista_id=lista['id'], tarefa_id=tarefa['id']) }}" method="post" style="display:inline;">
+          <button type="submit">
+            {% if tarefa['completa'] %}
+              ✅
+            {% else %}
+              ☐
+            {% endif %}
+          </button>
+        </form>
+        {{ tarefa['descricao'] }}
+        <form action="{{ url_for('tarefas.excluir', lista_id=lista['id'], tarefa_id=tarefa['id']) }}" method="post" style="display:inline;">
+          <button type="submit" onclick="return confirm('Excluir tarefa?')">🗑</button>
+        </form>
+      </li>
+    {% else %}
+      <li>Nenhuma tarefa ainda.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

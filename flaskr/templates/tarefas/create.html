@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Nova Tarefa{% endblock %}
+
+{% block content %}
+  <h1>Nova Tarefa</h1>
+
+  <form method="post">
+    <label for="descricao">Descrição:</label>
+    <input name="descricao" id="descricao" required>
+    <button type="submit">Salvar</button>
+  </form>
+
+  <a href="{{ url_for('tarefas.index', lista_id=lista_id) }}">← Voltar</a>
+{% endblock %}
