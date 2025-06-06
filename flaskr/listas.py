@@ -13,7 +13,7 @@ bp = Blueprint('listas', __name__, url_prefix='/listas')
 def index():
     db = get_db()
     listas = db.execute(
-        'SELECT id, titulo FROM lista WHERE usuario_id = ?',
+        'SELECT id, titulo FROM lista WHERE user_id = ?',
         (g.user['id'],)
     ).fetchall()
     return render_template('listas/index.html', listas=listas)
@@ -33,7 +33,7 @@ def criar():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO lista (titulo, usuario_id) VALUES (?, ?)',
+                'INSERT INTO lista (titulo, user_id) VALUES (?, ?)',
                 (titulo, g.user['id'])
             )
             db.commit()
@@ -43,13 +43,13 @@ def criar():
 
 def get_lista(id, verificar_usuario=True):
     lista = get_db().execute(
-        'SELECT id, titulo, usuario_id FROM lista WHERE id = ?',
+        'SELECT id, titulo, user_id FROM lista WHERE id = ?',
         (id,)
     ).fetchone()
 
     if lista is None:
         abort(404, f"Lista id {id} não existe.")
-    if verificar_usuario and lista['usuario_id'] != g.user['id']:
+    if verificar_usuario and lista['user_id'] != g.user['id']:
         abort(403)
 
     return lista

@@ -10,12 +10,12 @@ bp = Blueprint('tarefas', __name__, url_prefix='/tarefas')
 
 def get_lista(id, verificar_usuario=True):
     lista = get_db().execute(
-        'SELECT id, titulo, usuario_id FROM lista WHERE id = ?', (id,)
+        'SELECT id, titulo, user_id FROM lista WHERE id = ?', (id,)
     ).fetchone()
 
     if lista is None:
         abort(404, f"Lista id {id} não existe.")
-    if verificar_usuario and lista['usuario_id'] != g.user['id']:
+    if verificar_usuario and lista['user_id'] != g.user['id']:
         abort(403)
 
     return lista
