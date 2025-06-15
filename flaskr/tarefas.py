@@ -9,9 +9,13 @@ from flaskr.db import get_db
 bp = Blueprint('tarefas', __name__, url_prefix='/tarefas')
 
 def get_lista(id, verificar_usuario=True):
-    lista = get_db().execute(
-        'SELECT id, titulo, user_id FROM lista WHERE id = ?', (id,)
-    ).fetchone()
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(
+        'SELECT id, titulo, user_id FROM lista WHERE id = %s', (id,)
+    )
+    lista = cursor.fetchone()
+    cursor.close()
 
     if lista is None:
         abort(404, f"Lista id {id} não existe.")
@@ -24,10 +28,14 @@ def get_lista(id, verificar_usuario=True):
 @login_required
 def index(lista_id):
     lista = get_lista(lista_id)
-    tarefas = get_db().execute(
-        'SELECT id, descricao, completa FROM tarefa WHERE lista_id = ?',
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(
+        'SELECT id, descricao, completa FROM tarefa WHERE lista_id = %s',
         (lista_id,)
-    ).fetchall()
+    )
+    tarefas = cursor.fetchall()
+    cursor.close()
     return render_template('tarefas/index.html', lista=lista, tarefas=tarefas)
 
 @bp.route('/<int:lista_id>/criar', methods=('GET', 'POST'))
@@ -46,11 +54,13 @@ def criar(lista_id):
             flash(erro)
         else:
             db = get_db()
-            db.execute(
-                'INSERT INTO tarefa (descricao, lista_id) VALUES (?, ?)',
+            cursor = db.cursor()
+            cursor.execute(
+                'INSERT INTO tarefa (descricao, lista_id) VALUES (%s, %s)',
                 (descricao, lista_id)
             )
             db.commit()
+            cursor.close()
             return redirect(url_for('tarefas.index', lista_id=lista_id))
 
     return render_template('tarefas/create.html', lista_id=lista_id)
@@ -59,17 +69,24 @@ def criar(lista_id):
 @login_required
 def completar(lista_id, tarefa_id):
     db = get_db()
-    db.execute(
-        'UPDATE tarefa SET completa = NOT completa WHERE id = ? AND lista_id = ?',
+    cursor = db.cursor()
+    cursor.execute(
+        'UPDATE tarefa SET completa = NOT completa WHERE id = %s AND lista_id = %s',
         (tarefa_id, lista_id)
     )
     db.commit()
+    cursor.close()
     return redirect(url_for('tarefas.index', lista_id=lista_id))
 
 @bp.route('/<int:lista_id>/<int:tarefa_id>/excluir', methods=('POST',))
 @login_required
 def excluir(lista_id, tarefa_id):
     db = get_db()
-    db.execute('DELETE FROM tarefa WHERE id = ? AND lista_id = ?', (tarefa_id, lista_id))
+    cursor = db.cursor()
+    cursor.execute(
+        'DELETE FROM tarefa WHERE id = %s AND lista_id = %s',
+        (tarefa_id, lista_id)
+    )
     db.commit()
+    cursor.close()
     return redirect(url_for('tarefas.index', lista_id=lista_id))

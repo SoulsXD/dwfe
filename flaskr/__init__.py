@@ -5,7 +5,12 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        DB_CONFIG={
+            'host': 'localhost',
+            'user': 'root',
+            'password': '1608',
+            'database': 'flask_todo'
+        }
     )
 
     if test_config is not None:

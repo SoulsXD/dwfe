@@ -12,10 +12,12 @@ bp = Blueprint('listas', __name__, url_prefix='/listas')
 @login_required
 def index():
     db = get_db()
-    listas = db.execute(
-        'SELECT id, titulo FROM lista WHERE user_id = ?',
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(
+        'SELECT id, titulo FROM lista WHERE user_id = %s',
         (g.user['id'],)
-    ).fetchall()
+    )
+    listas = cursor.fetchall()
     return render_template('listas/index.html', listas=listas)
 
 @bp.route('/criar', methods=('GET', 'POST'))
@@ -32,8 +34,9 @@ def criar():
             flash(erro)
         else:
             db = get_db()
-            db.execute(
-                'INSERT INTO lista (titulo, user_id) VALUES (?, ?)',
+            cursor = db.cursor()
+            cursor.execute(
+                'INSERT INTO lista (titulo, user_id) VALUES (%s, %s)',
                 (titulo, g.user['id'])
             )
             db.commit()
@@ -42,10 +45,13 @@ def criar():
     return render_template('listas/create.html')
 
 def get_lista(id, verificar_usuario=True):
-    lista = get_db().execute(
-        'SELECT id, titulo, user_id FROM lista WHERE id = ?',
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(
+        'SELECT id, titulo, user_id FROM lista WHERE id = %s',
         (id,)
-    ).fetchone()
+    )
+    lista = cursor.fetchone()
 
     if lista is None:
         abort(404, f"Lista id {id} não existe.")
@@ -70,8 +76,9 @@ def atualizar(id):
             flash(erro)
         else:
             db = get_db()
-            db.execute(
-                'UPDATE lista SET titulo = ? WHERE id = ?',
+            cursor = db.cursor()
+            cursor.execute(
+                'UPDATE lista SET titulo = %s WHERE id = %s',
                 (titulo, id)
             )
             db.commit()
@@ -84,6 +91,7 @@ def atualizar(id):
 def excluir(id):
     get_lista(id)
     db = get_db()
-    db.execute('DELETE FROM lista WHERE id = ?', (id,))
+    cursor = db.cursor()
+    cursor.execute('DELETE FROM lista WHERE id = %s', (id,))
     db.commit()
     return redirect(url_for('listas.index'))
