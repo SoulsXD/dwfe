@@ -25,7 +25,6 @@ def get_lista(id, verificar_usuario=True):
     return lista
 
 @bp.route('/<int:lista_id>/')
-@login_required
 def index(lista_id):
     lista = get_lista(lista_id)
     db = get_db()
@@ -39,7 +38,6 @@ def index(lista_id):
     return render_template('tarefas/index.html', lista=lista, tarefas=tarefas)
 
 @bp.route('/<int:lista_id>/criar', methods=('GET', 'POST'))
-@login_required
 def criar(lista_id):
     get_lista(lista_id)
 
@@ -66,7 +64,6 @@ def criar(lista_id):
     return render_template('tarefas/create.html', lista_id=lista_id)
 
 @bp.route('/<int:lista_id>/<int:tarefa_id>/completar', methods=('POST',))
-@login_required
 def completar(lista_id, tarefa_id):
     db = get_db()
     cursor = db.cursor()
@@ -79,7 +76,6 @@ def completar(lista_id, tarefa_id):
     return redirect(url_for('tarefas.index', lista_id=lista_id))
 
 @bp.route('/<int:lista_id>/<int:tarefa_id>/excluir', methods=('POST',))
-@login_required
 def excluir(lista_id, tarefa_id):
     db = get_db()
     cursor = db.cursor()
