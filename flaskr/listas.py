@@ -9,6 +9,7 @@ from flaskr.db import get_db
 bp = Blueprint('listas', __name__, url_prefix='/listas')
 
 @bp.route('/')
+@login_required
 def index():
     db = get_db()
     cursor = db.cursor(dictionary=True)
@@ -20,6 +21,7 @@ def index():
     return render_template('listas/index.html', listas=listas)
 
 @bp.route('/criar', methods=('GET', 'POST'))
+@login_required
 def criar():
     if request.method == 'POST':
         titulo = request.form['titulo']
@@ -59,6 +61,7 @@ def get_lista(id, verificar_usuario=True):
     return lista
 
 @bp.route('/<int:id>/atualizar', methods=('GET', 'POST'))
+@login_required
 def atualizar(id):
     lista = get_lista(id)
 
@@ -84,6 +87,7 @@ def atualizar(id):
     return render_template('listas/create.html', lista=lista)
 
 @bp.route('/<int:id>/excluir', methods=('POST',))
+@login_required
 def excluir(id):
     get_lista(id)
     db = get_db()
