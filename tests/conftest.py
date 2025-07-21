@@ -9,7 +9,7 @@ def app():
         'TESTING': True,
         'MYSQL_HOST': 'localhost',
         'MYSQL_USER': 'root',
-        'MYSQL_PASSWORD': '',  # ajuste conforme seu MySQL
+        'MYSQL_PASSWORD': '1608',
         'MYSQL_DATABASE': 'flask_test',
     })
 
@@ -76,10 +76,10 @@ def limpar_banco(app):
                        ('Tarefa Teste', False, lista_id))
         db.commit()
 
-# Cliente já autenticado manualmente pela sessão
+# Cliente já autenticado manualmente pela sessão para burlar o login required (tava dando erro)
 @pytest.fixture
 def auth_client(app):
     with app.test_client() as client:
         with client.session_transaction() as sess:
-            sess['user_id'] = 1  # ID do usuário criado em limpar_banco
+            sess['user_id'] = 1 
         return client
