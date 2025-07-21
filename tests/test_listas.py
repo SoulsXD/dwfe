@@ -1,4 +1,4 @@
-def test_lista_index(auth_client):  # ✅ Corrigido para usar auth_client
+def test_lista_index(auth_client): 
     response = auth_client.get('/listas/', follow_redirects=True)
     assert b'Lista Teste' in response.data
 
