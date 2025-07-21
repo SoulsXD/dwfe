@@ -6,3 +6,7 @@ pip install -r requirements.txt
 $env:FLASK_APP = "flaskr"
 flask init-db
 flask run
+
+
+para os teste utilizar
+$env:PYTHONPATH="."; pytest na raiz
